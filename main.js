@@ -38,3 +38,32 @@ const getUsers = () => {
 
 getUsers();
 setupCounter(document.querySelector('#counter'));
+
+import { fakestoreAPI } from "./fakeStoreService";
+
+export const getProducts = async () => {
+  try {
+    const response = await fakestoreAPI.get("/products");
+    return response.data;
+  } catch (error) {
+      console.log(error.response.data.messeage);
+  }
+
+};
+
+
+export const getProductByID = async (product_id) => {
+  try {
+    const response = await fakestoreAPI.get('/products/$');
+    return response.data;
+  } catch (error) {
+      console.log(error.response.data.messeage);
+  }
+
+};
+
+export const createProduct = async (data) => {
+  try {
+    
+  }
+}
