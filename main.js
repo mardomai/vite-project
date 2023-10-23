@@ -1,31 +1,36 @@
-import './style.css';
+import "./style.css";
 import axios from 'axios';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <h1>Recipes</h1>
-    <ul id="recipeList" class="card">
-    </ul>
-  </div>
-`;
+document.addEventListener('DOMContentLoaded', () => {
+  const recipeList = document.getElementById('recipeList');
 
-const getRecipes = () => {
-  axios
-    .get('https://usman-fake-api.herokuapp.com/api/recipes')
-    .then(response => {
-      const recipeList = document.querySelector('#recipeList');
+  const displayRecipe = (recipe) => {
+    const recipeItem = document.createElement('div');
+    recipeItem.classList.add('card');
+
+    const recipeName = document.createElement('h2');
+    recipeName.textContent = recipe.name;
+
+    const recipeDescription = document.createElement('p');
+    recipeDescription.textContent = recipe.description;
+
+    recipeItem.appendChild(recipeName);
+    recipeItem.appendChild(recipeDescription);
+    recipeList.appendChild(recipeItem);
+  };
+
+  const getRecipes = async () => {
+    try {
+      const response = await axios.get('https://usman-fake-api.herokuapp.com/api/recipes');
       const recipes = response.data;
 
-      // Loop through the recipes and create list items
-      recipes.forEach(recipe => {
-        const listItem = document.createElement('li');
-        listItem.textContent = recipe.name;
-        recipeList.appendChild(listItem);
+      recipes.forEach((recipe) => {
+        displayRecipe(recipe);
       });
-    })
-    .catch(error => {
+    } catch (error) {
       console.error(error);
-    });
-};
+    }
+  };
 
-getRecipes();
+  getRecipes();
+});
