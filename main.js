@@ -1,69 +1,31 @@
 import './style.css';
-import javascriptLogo from './javascript.svg';
-import { setupCounter } from './counter.js';
 import axios from 'axios';
 
 document.querySelector('#app').innerHTML = `
   <div>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  <div class="card">
-     <img id="catImage" src="" alt="Cat Image"/>
-     <button id="counter" type="button"></button>
- </div>
+    <h1>Recipes</h1>
+    <ul id="recipeList" class="card">
+    </ul>
   </div>
 `;
 
-const getUsers = () => {
+const getRecipes = () => {
   axios
-    .get('https://api.thecatapi.com/v1/images/search')
+    .get('https://usman-fake-api.herokuapp.com/api/recipes')
     .then(response => {
-      // Handle the response here
-      const catImageElement = document.querySelector('#catImage');
-      
-      // Set the src attribute of the img element to the image URL
-      catImageElement.src = response.data[0].url;
-      
-      // Set alt text for the image
-      catImageElement.alt = 'Cat Image';
+      const recipeList = document.querySelector('#recipeList');
+      const recipes = response.data;
+
+      // Loop through the recipes and create list items
+      recipes.forEach(recipe => {
+        const listItem = document.createElement('li');
+        listItem.textContent = recipe.name;
+        recipeList.appendChild(listItem);
+      });
     })
     .catch(error => {
       console.error(error);
     });
 };
 
-getUsers();
-setupCounter(document.querySelector('#counter'));
-
-import { fakestoreAPI } from "./fakeStoreService";
-
-export const getProducts = async () => {
-  try {
-    const response = await fakestoreAPI.get("/products");
-    return response.data;
-  } catch (error) {
-      console.log(error.response.data.messeage);
-  }
-
-};
-
-
-export const getProductByID = async (product_id) => {
-  try {
-    const response = await fakestoreAPI.get('/products/$');
-    return response.data;
-  } catch (error) {
-      console.log(error.response.data.messeage);
-  }
-
-};
-
-export const createProduct = async (data) => {
-  try {
-    
-  }
-}
+getRecipes();
