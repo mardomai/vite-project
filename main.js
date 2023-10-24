@@ -1,4 +1,3 @@
-import "./style.css";
 import axios from 'axios';
 
 document.addEventListener('DOMContentLoaded', () => {
